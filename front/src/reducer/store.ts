@@ -41,6 +41,20 @@ export const deckReducer = (state: DeckReducerState, action: Iaction) => {
             let decodedHero = {
                 name: heroResponse.name,
                 image: heroResponse.imagesrc,
+                traits: heroResponse.traits,
+                sphere_name: heroResponse.sphere_name,
+                position: heroResponse.position,
+                is_unique: heroResponse.is_unique,
+                threat: heroResponse.threat,
+                attack: heroResponse.attack,
+                defense: heroResponse.defense,
+                health: heroResponse.health,
+                quantity: heroResponse.quantity,
+                deck_limit: heroResponse.deck_limit,
+                illustrator: heroResponse.illustrator,
+                text: heroResponse.text,
+                url: heroResponse.url,
+                flavor: heroResponse.flavor,
                 error: heroResponse.error ? heroResponse.error : undefined,
                 code: heroResponse.code ? heroResponse.code : undefined
             }

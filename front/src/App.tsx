@@ -4,11 +4,14 @@ import DeckIdInput from "./components/DeckIdInput";
 import { getDeckList, getHero } from "./Api/RingsDbApi";
 import HeroList from "./components/HeroList";
 import { deckReducer, DeckReducerInitial } from "./reducer/store";
+import CardInfoModal from "./components/CardInfoModal";
+import { IHero } from "./reducer/RingsDbTypes";
 
 function App() {
   const [state, dispatch] = useReducer(deckReducer, DeckReducerInitial);
   const [deckId, setdeckId] = useState<number>();
   const [inputError, setinputError] = useState<string | undefined>(undefined);
+  const [selHero, setselHero] = useState<IHero | undefined>(undefined);
 
   // Get the deck
   useEffect(() => {
@@ -52,7 +55,18 @@ function App() {
           deckIdCallback={(deckidOut: number) => setdeckId(deckidOut)}
           error={inputError}
         />
-        {state.heros && <HeroList heros={state.heros} />}
+        {state.heros && (
+          <HeroList
+            heros={state.heros}
+            heroClickCallback={(hero) => setselHero(hero)}
+          />
+        )}
+        {selHero && (
+          <CardInfoModal
+            hero={selHero}
+            modalCloseCallback={() => setselHero(undefined)}
+          />
+        )}
       </header>
     </div>
   );

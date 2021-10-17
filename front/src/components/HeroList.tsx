@@ -7,6 +7,7 @@ import { makeStyles } from "@mui/styles";
 import CardMissing from "../media/CardNotFound.jpg";
 interface IProps {
   heros: IHero[];
+  heroClickCallback: (hero: IHero) => void;
 }
 
 const HeroCard = styled(Card)({
@@ -45,25 +46,23 @@ const HeroList = (props: IProps) => {
     <>
       <div className={classes.titleContaier}>
         <h4 style={{ margin: "0 0 0 20px" }}>
-          I present thee. The great heroes!
+          I present thee, The great heroes!
         </h4>
       </div>
       <div className={classes.container}>
-        {heros.map((hero, key) =>
-          hero.error ? (
-            <HeroCard key={key}>
+        {heros.map((hero, key) => (
+          <HeroCard key={key} onClick={() => props.heroClickCallback(hero)}>
+            {hero.error ? (
               <CardMedia component="img" image={CardMissing} alt={hero.name} />
-            </HeroCard>
-          ) : (
-            <HeroCard key={key}>
+            ) : (
               <CardMedia
                 component="img"
                 image={RingsDBUrl + hero.image}
                 alt={hero.name}
               />
-            </HeroCard>
-          )
-        )}
+            )}
+          </HeroCard>
+        ))}
       </div>
     </>
   );
