@@ -2,8 +2,6 @@ import Card from "@mui/material/Card/Card";
 import TextField from "@mui/material/TextField/TextField";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
-import { getDeckList } from "../Api/RingsDbApi";
-import { decodeDeckResponse, IDeck } from "../Api/RingsDbTypes";
 
 const IdInputTextfield = styled(TextField)({
   "&": {
@@ -13,7 +11,8 @@ const IdInputTextfield = styled(TextField)({
 });
 
 interface Iprops {
-  deckCallback: (deck: IDeck) => void;
+  deckIdCallback: (deck: number) => void;
+  error?: string;
 }
 
 const DeckIdInput = (props: Iprops) => {
@@ -23,19 +22,7 @@ const DeckIdInput = (props: Iprops) => {
   const [error, seterror] = useState<string | undefined>(undefined);
   // When input field is submitted make the api call and decode its contents and send the IDeck object to the callback
   const onSubmit = () => {
-    deckId &&
-      getDeckList(deckId)
-        .then((res) => {
-          // If error in ringsDb occurred
-          if (res.data.error) {
-            console.error(res.data.error);
-            seterror(res.data.error);
-          } else {
-            let deck = decodeDeckResponse(res.data);
-            props.deckCallback(deck);
-          }
-        })
-        .catch((e) => console.error(e));
+    deckId && props.deckIdCallback(deckId);
   };
 
   return (
@@ -47,7 +34,7 @@ const DeckIdInput = (props: Iprops) => {
         }}
       >
         <IdInputTextfield
-          error={error ? true : false}
+          error={props.error ? true : false}
           inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
           label="Deck ID"
           variant="outlined"
@@ -55,7 +42,7 @@ const DeckIdInput = (props: Iprops) => {
             setdeckId(Number(e.target.value));
             seterror(undefined);
           }}
-          helperText={error}
+          helperText={props.error}
         />
       </form>
     </Card>
