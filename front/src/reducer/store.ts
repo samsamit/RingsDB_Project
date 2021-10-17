@@ -1,4 +1,4 @@
-import { decodeHeroResponse, IDeck, IHero } from "./RingsDbTypes";
+import { IDeck, IHero } from "./RingsDbTypes";
 type IType = "NEW_DECK" | "ADD_HERO";
 
 interface DeckReducerState{
@@ -36,12 +36,14 @@ export const deckReducer = (state: DeckReducerState, action: Iaction) => {
         }
         case 'ADD_HERO':
             let heroResponse = action.payload
+            console.log(heroResponse)
             let newHeros = []
             let decodedHero = {
                 name: heroResponse.name,
-                image: heroResponse.imagesrc
+                image: heroResponse.imagesrc,
+                error: heroResponse.error ? heroResponse.error : undefined,
+                code: heroResponse.code ? heroResponse.code : undefined
             }
-            console.log(decodedHero.image)
             if(state.heros){
                 newHeros = [...state.heros, decodedHero]
             }else{

@@ -2,11 +2,23 @@ import Card from "@mui/material/Card/Card";
 import TextField from "@mui/material/TextField/TextField";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
+import { makeStyles } from "@mui/styles";
 
 const IdInputTextfield = styled(TextField)({
   "&": {
     margin: 10,
-    maxWidth: 300,
+    maxWidth: 400,
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "green",
+    },
+  },
+});
+
+const useStyles = makeStyles({
+  container: {
+    backgroundColor: "#00a152",
   },
 });
 
@@ -16,6 +28,7 @@ interface Iprops {
 }
 
 const DeckIdInput = (props: Iprops) => {
+  const classes = useStyles();
   // state holds the input value
   const [deckId, setdeckId] = useState<number>();
   // state holds possible error messages to be displayed below input
@@ -26,7 +39,7 @@ const DeckIdInput = (props: Iprops) => {
   };
 
   return (
-    <Card variant="outlined">
+    <Card variant="outlined" className={classes.container}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -42,7 +55,11 @@ const DeckIdInput = (props: Iprops) => {
             setdeckId(Number(e.target.value));
             seterror(undefined);
           }}
-          helperText={props.error}
+          helperText={
+            props.error
+              ? props.error
+              : "Give me a deck id and ill fetch the heroes for you."
+          }
         />
       </form>
     </Card>

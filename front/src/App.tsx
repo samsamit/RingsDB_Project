@@ -30,7 +30,6 @@ function App() {
 
   // Get heros from deck
   useEffect(() => {
-    console.log("herocodes");
     state.deck &&
       state.deck.heroCodes.forEach((code) => {
         getHero(code)
@@ -38,9 +37,9 @@ function App() {
             dispatch({ type: "ADD_HERO", payload: res.data });
           })
           .catch((err) => {
-            console.error(err);
             let errorHero = { error: "No Access to hero", code: code };
             dispatch({ type: "ADD_HERO", payload: errorHero });
+            console.error("ERROR");
           });
       });
   }, [state.deck?.heroCodes]);
