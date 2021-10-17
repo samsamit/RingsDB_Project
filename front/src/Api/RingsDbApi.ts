@@ -8,3 +8,4 @@ const baseApi = axios.create({
 export const getDeckList = (deckId: number): Promise<any> => {
     return baseApi.get(`/oauth2/deck/load/${deckId}`)
 }
+
