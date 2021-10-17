@@ -24,6 +24,7 @@ const useStyles = makeStyles({
 
 interface Iprops {
   deckIdCallback: (deck: number) => void;
+  clearError: () => void;
   error?: string;
 }
 
@@ -31,8 +32,6 @@ const DeckIdInput = (props: Iprops) => {
   const classes = useStyles();
   // state holds the input value
   const [deckId, setdeckId] = useState<number>();
-  // state holds possible error messages to be displayed below input
-  const [error, seterror] = useState<string | undefined>(undefined);
   // When input field is submitted make the api call and decode its contents and send the IDeck object to the callback
   const onSubmit = () => {
     deckId && props.deckIdCallback(deckId);
@@ -52,8 +51,8 @@ const DeckIdInput = (props: Iprops) => {
           label="Deck ID"
           variant="outlined"
           onChange={(e) => {
+            props.clearError();
             setdeckId(Number(e.target.value));
-            seterror(undefined);
           }}
           helperText={
             props.error

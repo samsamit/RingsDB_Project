@@ -50,6 +50,8 @@ interface IProps {
 const CardInfoModal = (props: IProps) => {
   const classes = useStyles();
   const { hero } = props;
+
+  // HandleModal toggle
   const [open, setOpen] = React.useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -57,11 +59,15 @@ const CardInfoModal = (props: IProps) => {
     props.modalCloseCallback();
   };
 
+  // Array for not showing some keys
   const infoToNotShow = ["error", "code", "image", "text", "flavor"];
+
+  // If hero is upddated re-render
   useEffect(() => {
     props.hero && handleOpen();
   }, [props.hero]);
 
+  // Parse <cite> tags from hero flavor text
   const parseCite = (flavor: string): string => {
     let newFlavor = flavor.replace("<cite>", "-");
     newFlavor = newFlavor.replace("</cite>", "-");
@@ -92,7 +98,9 @@ const CardInfoModal = (props: IProps) => {
                   </div>
                 );
               }
+              return <></>;
             })}
+
             <div className={classes.flavorText}>
               <blockquote>{hero.flavor && parseCite(hero.flavor)}</blockquote>
             </div>

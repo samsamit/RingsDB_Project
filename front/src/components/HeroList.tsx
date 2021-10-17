@@ -51,7 +51,10 @@ const HeroList = (props: IProps) => {
       </div>
       <div className={classes.container}>
         {heros.map((hero, key) => (
-          <HeroCard key={key} onClick={() => props.heroClickCallback(hero)}>
+          <HeroCard
+            key={key}
+            onClick={() => !hero.error && props.heroClickCallback(hero)}
+          >
             {hero.error ? (
               <CardMedia component="img" image={CardMissing} alt={hero.name} />
             ) : (

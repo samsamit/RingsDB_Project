@@ -1,5 +1,5 @@
 import { IDeck, IHero } from "./RingsDbTypes";
-type IType = "NEW_DECK" | "ADD_HERO";
+type IType = "NEW_DECK" | "ADD_HERO" | "CLEAR";
 
 interface DeckReducerState{
     deck?: IDeck;
@@ -18,12 +18,15 @@ export const DeckReducerInitial: DeckReducerState = {
 
 export const deckReducer = (state: DeckReducerState, action: Iaction) => {
     switch (action.type) {
+        // Adds new deck to store and loses the old one
       case 'NEW_DECK':
         let deckResponse = action.payload
+        // I take the hero codes and put them to array for easier handling
         let heroCodes: number[] = []
         for (let key in deckResponse.heroes){
             heroCodes.push(Number(key))
         }
+        // I parse the response json to match the correct interface
         let newDeck = {
             name: deckResponse.name,
             description_md: deckResponse.description_md,
@@ -36,8 +39,9 @@ export const deckReducer = (state: DeckReducerState, action: Iaction) => {
         }
         case 'ADD_HERO':
             let heroResponse = action.payload
-            console.log(heroResponse)
+
             let newHeros = []
+             // I parse the response json to match the correct interface
             let decodedHero = {
                 name: heroResponse.name,
                 image: heroResponse.imagesrc,
@@ -68,6 +72,8 @@ export const deckReducer = (state: DeckReducerState, action: Iaction) => {
                 heros: newHeros
             }
 
+        case 'CLEAR':
+            return DeckReducerInitial
       default:
         return state;
     }

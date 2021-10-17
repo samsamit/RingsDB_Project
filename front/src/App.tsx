@@ -9,26 +9,29 @@ import { IHero } from "./reducer/RingsDbTypes";
 
 function App() {
   const [state, dispatch] = useReducer(deckReducer, DeckReducerInitial);
+  // for storing selected deck id
   const [deckId, setdeckId] = useState<number>();
+  // for input error ( if the get req wont find deck)
   const [inputError, setinputError] = useState<string | undefined>(undefined);
+  // for modal to show selected hero
   const [selHero, setselHero] = useState<IHero | undefined>(undefined);
 
   // Get the deck
   useEffect(() => {
-    console.log("deckID");
+    dispatch({ type: "CLEAR", payload: {} });
     deckId &&
       getDeckList(deckId)
         .then((res) => {
           // If error in ringsDb occurred
           if (res.data.error) {
             console.error(res.data.error);
-            setinputError(res.data.error);
           } else {
-            console.log(res.data);
             dispatch({ type: "NEW_DECK", payload: res.data });
           }
         })
-        .catch((e) => console.error(e));
+        .catch((e) => {
+          setinputError("Deck not found...");
+        });
   }, [deckId]);
 
   // Get heros from deck
@@ -45,7 +48,7 @@ function App() {
             console.error("ERROR");
           });
       });
-  }, [state.deck?.heroCodes]);
+  }, [state.deck, state.deck?.heroCodes]);
 
   return (
     <div className="App">
@@ -54,6 +57,7 @@ function App() {
         <DeckIdInput
           deckIdCallback={(deckidOut: number) => setdeckId(deckidOut)}
           error={inputError}
+          clearError={() => setinputError("")}
         />
         {state.heros && (
           <HeroList
